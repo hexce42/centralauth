@@ -1,0 +1,12 @@
+uri ldap://<%= @ldappriserver %> ldap://<%= @ldapsecserver %>
+binddn <%= @binddn %>
+bindpw <%= @bindpw %>
+bind_timelimit 2
+ssl <%= @ssl_settings %>
+tls_reqcert <%= @tls_reqcert_setting %>
+tls_cacert <%= @ldapcacertdir %>/etit_ca.pem
+
+sudoers_base <%= @sudoers_base %>
+
+sudoers_search_filter (&(objectClass=sudoRole)<% if @groups_local.length > 1 -%>(|<% end -%><%- @groups_local.each do |gr_local| -%>(memberOf=cn=<%= gr_local -%>,ou=<%= @baseou_group -%>,<%= @baseou -%>)<% end -%>)<% if @groups_local.length > 1 -%>)<% end -%>
+

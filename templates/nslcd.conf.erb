@@ -1,0 +1,20 @@
+# managed by puppet
+uri ldap://<%= @ldappriserver %>
+uri ldap://<%= @ldapsecserver %>
+ldap_version <%= @ldapversion %>
+base <%= @baseou %>
+binddn <%= @binddn %>
+bindpw <%= @bindpw %>
+bind_timelimit 2
+uid <%= @ldap_user %>
+gid <%= @ldap_group %>
+ssl <%= @ssl_settings %>
+tls_reqcert <%= @tls_reqcert_setting %>
+tls_cacertfile <%= @ldapcacertdir %>/etit_ca.pem
+
+filter passwd (&(objectClass=posixAccount)<% if @groups_local.length > 1 -%>(|<% end -%><%- @groups_local.each do |gr_local| -%>(memberOf=cn=<%= gr_local -%>,ou=<%= @baseou_group -%>,<%= @baseou -%>)<% end -%>)<% if @groups_local.length > 1 -%>)<% end -%>
+
+filter group (&(|(objectClass=posixGroup)(objectClass=posixAccount))<% if @groups_local.length > 1 -%>(|<% end -%><%- @groups_local.each do |gr_local| -%>(memberOf=cn=<%= gr_local -%>,ou=<%= @baseou_group -%>,<%= @baseou -%>)<% end -%>)<% if @groups_local.length > 1 -%>)<% end -%>
+
+filter shadow (&(|(objectClass=posixGroup)(objectClass=posixAccount))<% if @groups_local.length > 1 -%>(|<% end -%><%- @groups_local.each do |gr_local| -%>(memberOf=cn=<%= gr_local -%>,ou=<%= @baseou_group -%>,<%= @baseou -%>)<% end -%>)<% if @groups_local.length > 1 -%>)<% end -%>
+

@@ -1,0 +1,6 @@
+# Managed by puppet
+session	[default=1]			pam_permit.so
+session	required			pam_permit.so
+session	required        	pam_mkhomedir.so umask=0022 skel=/etc/skel
+session	required			pam_unix.so 
+session	[success=ok default=ignore]	pam_ldap.so minimum_uid=1000

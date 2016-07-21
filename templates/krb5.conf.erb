@@ -1,0 +1,24 @@
+# managed by puppet
+[libdefaults]
+	default_realm = <%= @krb5_realm %>
+	dns_lookup_realm = <%= @krb5_dns_lookup_realm %>
+ 	dns_lookup_kdc = <%= @krb5_dns_lookup_kdc %>
+ 	ticket_lifetime = <%= @krb5_ticket_lifetime %>
+ 	renew_lifetime = <%= @krb5_renew_lifetime %>
+	forwardable = true
+
+[realms]
+<%= @krb5_realm %> = {
+		kdc = <%= @adpriserver %>
+		kdc = <%= @adsecserver %>
+		admin_server = <%= @adpriserver %>
+	}
+
+[domain_realm]
+	<%= @krb5_realm.downcase %> = <%= @krb5_realm %>
+	.<%= @krb5_realm.downcase %> = <%= @krb5_realm %>
+
+[appdefaults]
+	pam = {
+		validate = false
+	}
